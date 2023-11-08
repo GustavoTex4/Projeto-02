@@ -2,58 +2,62 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { Button, Card, Dialog, FAB, IconButton, MD3DarkTheme, Portal, Searchbar, Text } from 'react-native-paper'
+import { Button, Card, Dialog, FAB, IconButton, MD3DarkTheme, Portal, Searchbar, Text, TextInput } from 'react-native-paper'
 
 
 const Produtos = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const onChangeSearch = query => setSearchQuery(query);
-
-
+  
+  const [busca, setBusca] = useState('')
+  
+  
+  
+  
   const [produtos, setProdutos] = useState([])
   const [idExcluir, setIdExcluir] = useState(0)
-
+  
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
-
+  
   useFocusEffect(
     React.useCallback(() => {
       carregarDados()
     }, [])
-  );
-
-  function carregarDados() {
-    AsyncStorage.getItem('produtos').then(resultado => {
-      resultado = JSON.parse(resultado) || []
-      setProdutos(resultado)
-    })
-  }
-
-  function confirmarExclusao(id) {
-    setIdExcluir(id)
-    setVisible(true)
-  }
-
-  function excluir() {
-    produtos.splice(idExcluir, 1)
+    );
+    
+    function carregarDados() {
+      AsyncStorage.getItem('produtos').then(resultado => {
+        resultado = JSON.parse(resultado) || []
+        setProdutos(resultado)
+      })
+    }
+    
+    function confirmarExclusao(id) {
+      setIdExcluir(id)
+      setVisible(true)
+    }
+    
+    function excluir() {
+      produtos.splice(idExcluir, 1)
     AsyncStorage.setItem('produtos', JSON.stringify(produtos))
     carregarDados()
     setVisible(false)
   }
-
+  
+  const produtossFiltrados = produtos.filter((item) => item.nome.toLowerCase().includes(busca));
+  
   return (
     <>
-      <Searchbar
-        placeholder="Pesquisar"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
+      <TextInput
+        label="Pesquisar"
+        value={busca} 
+        onChangeText={(text) => setBusca(text)}
+        left={<TextInput.Icon icon="search" />}
       />
 
       <ScrollView style={{ padding: 15 }}>
 
-        {produtos.map((item, i) => (
+        {produtossFiltrados.map((item, i) => (
           <Card key={i} mode='outlined' style={{ marginBottom: 10 }}>
             <Card.Content>
               <Text variant="titleLarge">{item.nome}</Text>
