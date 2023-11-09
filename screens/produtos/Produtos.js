@@ -6,51 +6,48 @@ import { Button, Card, Dialog, FAB, IconButton, MD3DarkTheme, Portal, Searchbar,
 
 
 const Produtos = ({ navigation }) => {
-  
+
   const [busca, setBusca] = useState('')
-  
-  
-  
-  
+
   const [produtos, setProdutos] = useState([])
   const [idExcluir, setIdExcluir] = useState(0)
-  
+
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
-  
+
   useFocusEffect(
     React.useCallback(() => {
       carregarDados()
     }, [])
-    );
-    
-    function carregarDados() {
-      AsyncStorage.getItem('produtos').then(resultado => {
-        resultado = JSON.parse(resultado) || []
-        setProdutos(resultado)
-      })
-    }
-    
-    function confirmarExclusao(id) {
-      setIdExcluir(id)
-      setVisible(true)
-    }
-    
-    function excluir() {
-      produtos.splice(idExcluir, 1)
+  );
+
+  function carregarDados() {
+    AsyncStorage.getItem('produtos').then(resultado => {
+      resultado = JSON.parse(resultado) || []
+      setProdutos(resultado)
+    })
+  }
+
+  function confirmarExclusao(id) {
+    setIdExcluir(id)
+    setVisible(true)
+  }
+
+  function excluir() {
+    produtos.splice(idExcluir, 1)
     AsyncStorage.setItem('produtos', JSON.stringify(produtos))
     carregarDados()
     setVisible(false)
   }
-  
+
   const produtossFiltrados = produtos.filter((item) => item.nome.toLowerCase().includes(busca));
-  
+
   return (
     <>
       <TextInput
         label="Pesquisar"
-        value={busca} 
+        value={busca}
         onChangeText={(text) => setBusca(text)}
         left={<TextInput.Icon icon="search" />}
       />
