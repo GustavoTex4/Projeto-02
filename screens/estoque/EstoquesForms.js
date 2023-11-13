@@ -95,7 +95,7 @@ const EstoquesForm = ({ navigation, route }) => {
               label='Preco'
               keyboardType='decimal-pad'
               value={values.preco}
-              onChangeText={handleChange('preco')}
+              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99','R$999,9') )}}
             />
             {(errors.preco && touched.preco) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
