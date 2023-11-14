@@ -4,14 +4,14 @@ import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 import { mask } from 'remask'
+import { Picker } from '@react-native-picker/picker'
 import estoqueValidator from '../../validator/estoqueValidator'
+import { useEffect } from 'react'
 
 
 const EstoquesForm = ({ navigation, route }) => {
-
+  const [produto1, setProduto1] = useState([])
   let estoque = {
-    produto: '',
-    sessao: '',
     quantidade: '',
     preco: ''
 
@@ -40,42 +40,37 @@ const EstoquesForm = ({ navigation, route }) => {
       navigation.goBack()
     })
   }
+  useEffect(() => {
+    AsyncStorage.getItem('produtos').then(resultado => {
+      resultado = JSON.parse(resultado) || []
+      setProduto1(resultado)
+    })
+  }, [])
 
   return (
     <ScrollView style={{ margin: 15 }}>
-      <Text>Formulário de estoque</Text>
+      <Text>Formulário de estoques</Text>
 
       <Formik
         initialValues={estoque}
         validationSchema={estoqueValidator}
         onSubmit={values => salvar(values)}
+
       >
         {({ values, handleChange, handleSubmit, errors, touched, setFieldValue }) => (
           <View>
-            <TextInput
-              style={{ marginTop: 10 }}
-              mode='outlined'
-              label='Produto'
-              value={values.produto}
-              onChangeText={handleChange('produto')}
-            />
-            {(errors.produto && touched.produto) &&
-              <Text style={{ color: 'red', marginTop: 5 }}>
-                {errors.produto}
-              </Text>
-            }
-            <TextInput
-              style={{ marginTop: 10 }}
-              mode='outlined'
-              label='Sessao'
-              value={values.sessao}
-              onChangeText={handleChange('sessao')}
-            />
-            {(errors.sessao && touched.sessao) &&
-              <Text style={{ color: 'red', marginTop: 5 }}>
-                {errors.sessao}
-              </Text>
-            }
+              <Picker
+              selectedValue={values.produto}
+              onValueChange={handleChange('produto')}>
+              <Picker.Item label="Escolha o produto" value="" />
+              {produto1.map((item,i)=>(
+                <Picker.Item
+                key={i}
+                label={item.nome}
+                value={item.nome} 
+                />
+                ))}
+            </Picker>
               <TextInput
                 style={{ marginTop: 10 }}
                 mode='outlined'
@@ -95,7 +90,7 @@ const EstoquesForm = ({ navigation, route }) => {
               label='Preco'
               keyboardType='decimal-pad'
               value={values.preco}
-              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99','R$999,9') )}}
+              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99') )}}
             />
             {(errors.preco && touched.preco) &&
               <Text style={{ color: 'red', marginTop: 5 }}>

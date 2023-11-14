@@ -41,7 +41,7 @@ const Carrinhos = ({ navigation }) => {
     setVisible(false)
   }
 
-  const carrinhosFiltrados = carrinhos.filter((item) => item.nome.toLowerCase().includes(busca));
+  const carrinhosFiltrados = carrinhos.filter((item) => item.produto.toLowerCase().includes(busca));
 
   return (
     <>
@@ -57,7 +57,7 @@ const Carrinhos = ({ navigation }) => {
         {carrinhosFiltrados.map((item, i) => (
           <Card key={i} mode='outlined' style={{ marginBottom: 10 }}>
             <Card.Content>
-              <Text variant="titleLarge">{item.nome}</Text>
+              <Text variant="titleLarge">{item.produto}</Text>
               <Text variant="bodyMedium">Quantidade: {item.quantidade}</Text>
               <Text variant="bodyMedium">Preço: {item.preco} </Text>
             </Card.Content>

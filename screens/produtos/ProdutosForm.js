@@ -8,6 +8,7 @@ import { Picker } from '@react-native-picker/picker'
 import produtoValidator from '../../validator/produtoValidator'
 
 const ProdutosForm = ({ navigation, route }) => {
+  
 
   let produto = {
     nome: '',
@@ -41,6 +42,8 @@ const ProdutosForm = ({ navigation, route }) => {
     })
   }
 
+ 
+
   return (
     <ScrollView style={{ margin: 15 }}>
       <Text>Formulário de produtos</Text>
@@ -71,7 +74,7 @@ const ProdutosForm = ({ navigation, route }) => {
               label='Preco'
               keyboardType='decimal-pad'
               value={values.preco}
-              onChangeText={handleChange('preco')}
+              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99') )}}
             />
             {(errors.preco && touched.preco) &&
               <Text style={{ color: 'red', marginTop: 5 }}>

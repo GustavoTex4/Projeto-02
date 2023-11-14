@@ -6,12 +6,12 @@ import { Button, Text, TextInput } from 'react-native-paper'
 import { mask } from 'remask'
 import { Picker } from '@react-native-picker/picker'
 import pedidoValidator from '../../validator/pedidoValidator'
+import { useEffect } from 'react'
 
 
 const PedidosForm = ({ navigation, route }) => {
-
+  const [produto1, setProduto1] = useState([])
   let pedido = {
-    produto: '',
     quantidade: '',
     preco: ''
 
@@ -40,6 +40,12 @@ const PedidosForm = ({ navigation, route }) => {
       navigation.goBack()
     })
   }
+  useEffect(() => {
+    AsyncStorage.getItem('produtos').then(resultado => {
+      resultado = JSON.parse(resultado) || []
+      setProduto1(resultado)
+    })
+  }, [])
 
   return (
     <ScrollView style={{ margin: 15 }}>
@@ -49,21 +55,22 @@ const PedidosForm = ({ navigation, route }) => {
         initialValues={pedido}
         validationSchema={pedidoValidator}
         onSubmit={values => salvar(values)}
+
       >
         {({ values, handleChange, handleSubmit, errors, touched, setFieldValue }) => (
           <View>
-            <TextInput
-              style={{ marginTop: 10 }}
-              mode='outlined'
-              label='Produto'
-              value={values.produto}
-              onChangeText={handleChange('produto')}
-            />
-            {(errors.produto && touched.produto) &&
-              <Text style={{ color: 'red', marginTop: 5 }}>
-                {errors.produto}
-              </Text>
-            }
+              <Picker
+              selectedValue={values.produto}
+              onValueChange={handleChange('produto')}>
+              <Picker.Item label="Escolha o produto" value="" />
+              {produto1.map((item,i)=>(
+                <Picker.Item
+                key={i}
+                label={item.nome}
+                value={item.nome} 
+                />
+                ))}
+            </Picker>
               <TextInput
                 style={{ marginTop: 10 }}
                 mode='outlined'
@@ -83,7 +90,7 @@ const PedidosForm = ({ navigation, route }) => {
               label='Preco'
               keyboardType='decimal-pad'
               value={values.preco}
-              onChangeText={handleChange('preco')}
+              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99') )}}
             />
             {(errors.preco && touched.preco) &&
               <Text style={{ color: 'red', marginTop: 5 }}>

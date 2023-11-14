@@ -4,8 +4,7 @@ const produtoValidator = Yup.object().shape({
     nome: Yup.string()
         .min(2, 'Valor muito curto')
         .required('Campo obrigatório'),
-
-    preco: Yup.number()
+    preco: Yup.string()
     .min(5, 'Valor muito curto')
     .required('Campo obrigatório'),
     quantidade: Yup.number()

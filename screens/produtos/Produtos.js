@@ -61,7 +61,9 @@ const Produtos = ({ navigation }) => {
               <Text variant="bodyMedium">Preço: {item.preco} </Text>
               <Text variant="bodyMedium">Quantidade: {item.quantidade}</Text>
               <Text variant="bodyMedium">Descrição: {item.descricao} </Text>
-              <Text variant="bodyMedium">Foto: {item.foto}</Text>
+              <Card>
+                <Card.Cover source={{ uri: item.foto }} />
+              </Card>
             </Card.Content>
             <Card.Actions>
               <IconButton

@@ -4,13 +4,14 @@ import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 import { mask } from 'remask'
+import { Picker } from '@react-native-picker/picker'
+import { useEffect } from 'react'
 import carrinhoValidator from '../../validator/carrinhoValidator'
 
 
 const CarrinhosForm = ({ navigation, route }) => {
-
+  const [produto1, setProduto1] = useState([])
   let carrinho = {
-    nome: '',
     quantidade: '',
     preco: ''
 
@@ -39,30 +40,36 @@ const CarrinhosForm = ({ navigation, route }) => {
       navigation.goBack()
     })
   }
+  useEffect(() => {
+    AsyncStorage.getItem('produtos').then(resultado => {
+      resultado = JSON.parse(resultado) || []
+      setProduto1(resultado)
+    })
+  }, [])
 
   return (
     <ScrollView style={{ margin: 15 }}>
-      <Text>Formulário de carrinho</Text>
-
+      <Text>Formulário de carrinhos</Text>
       <Formik
         initialValues={carrinho}
         validationSchema={carrinhoValidator}
         onSubmit={values => salvar(values)}
+
       >
         {({ values, handleChange, handleSubmit, errors, touched, setFieldValue }) => (
           <View>
-            <TextInput
-              style={{ marginTop: 10 }}
-              mode='outlined'
-              label='Nome'
-              value={values.nome}
-              onChangeText={handleChange('nome')}
-            />
-            {(errors.nome && touched.nome) &&
-              <Text style={{ color: 'red', marginTop: 5 }}>
-                {errors.nome}
-              </Text>
-            }
+              <Picker
+              selectedValue={values.produto}
+              onValueChange={handleChange('produto')}>
+              <Picker.Item label="Escolha o produto" value="" />
+              {produto1.map((item,i)=>(
+                <Picker.Item
+                key={i}
+                label={item.nome}
+                value={item.nome} 
+                />
+                ))}
+            </Picker>
               <TextInput
                 style={{ marginTop: 10 }}
                 mode='outlined'
@@ -82,7 +89,7 @@ const CarrinhosForm = ({ navigation, route }) => {
               label='Preco'
               keyboardType='decimal-pad'
               value={values.preco}
-              onChangeText={handleChange('preco')}
+              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99') )}}
             />
             {(errors.preco && touched.preco) &&
               <Text style={{ color: 'red', marginTop: 5 }}>

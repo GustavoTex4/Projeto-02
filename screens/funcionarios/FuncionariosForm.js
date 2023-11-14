@@ -10,36 +10,18 @@ import axios from 'axios'
 
 const FuncionariosForm = ({ navigation, route }) => {
 
-  const [dados, setDados] = useState({})
+  const [endereco, setEndereco] = useState('')
 
-  async function handleChange(valor, campo) {
-
-      let endereco = {}
-      if (campo == 'cep' && valor.length == 8) {
-          endereco = await getEndereco(valor)
-          console.log(endereco);
-          setDados({ ...dados, ...endereco, [campo]: valor })
-      } else {
-          setDados({ ...dados, [campo]: valor })
-      }
-  }
-
-  async function getEndereco(cep) {
-      const endereco = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-      return endereco.data
-  }
-  function salvar() {
-    console.log(dados)
-}
   let funcionario = {
     nome: '',
     telefone: '',
     email: '',
     cpf: '',
     cep: '',
-    estado: ''
+    localidade: '',
+    logradouro:'',
+    bairro: '',
   }
-  const [selectedLanguage, setSelectedLanguage] = useState();
   const id = route.params?.id
 
   if (id >= 0) {
@@ -63,7 +45,13 @@ const FuncionariosForm = ({ navigation, route }) => {
       navigation.goBack()
     })
   }
-
+  function buscar(cep) {
+    axios.get(`https://viacep.com.br/ws/${cep}/json/`).then(response => {
+      setEndereco(response.data);
+      console.log(response.data);
+    })
+    }
+    console.log(funcionario.cep);
   return (
     <ScrollView style={{ margin: 15 }}>
       <Text>Formulário de funcionários</Text>
@@ -132,9 +120,10 @@ const FuncionariosForm = ({ navigation, route }) => {
               mode='outlined'
               label='CEP'
               keyboardType='number-pad'
-              value={dados.cep}
-              onChangeText={(valor) => handleChange(valor, 'cep')}
+              value={values.cep}
+              onChangeText={handleChange('cep')}
             />
+                <Button onPress={() => buscar(values.cep)}>busca</Button>
             {(errors.cep && touched.cep) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
                 {errors.cep}

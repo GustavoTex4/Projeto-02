@@ -1,14 +1,14 @@
 import * as Yup from 'yup';
 
 const carrinhoValidator = Yup.object().shape({
-    nome: Yup.string()
+    produto: Yup.string()
         .min(1, 'Valor muito curto')
         .required('Campo obrigatório'),
 
     quantidade: Yup.number()
         .min(1, 'Valor muito curto')
         .required('Campo obrigatório'),
-    preco: Yup.number()
+    preco: Yup.string()
         .min(5, 'Valor muito curto')
         .required('Campo obrigatório')
 
