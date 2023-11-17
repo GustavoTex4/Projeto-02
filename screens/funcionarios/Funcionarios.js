@@ -65,7 +65,10 @@ const Funcionarios = ({ navigation }) => {
               <Text variant="bodyMedium">Email: {item.email}</Text>
               <Text variant="bodyMedium">CPF: {item.cpf} </Text>
               <Text variant="bodyMedium">CEP: {item.cep}</Text>
-              <Text variant="bodyMedium">Estado: {item.estado}</Text>
+              <Text variant="bodyMedium">Logradouro: {item.logradouro}</Text>
+              <Text variant="bodyMedium">Complemento: {item.complemento}</Text>
+              <Text variant="bodyMedium">Numero: {item.numero}</Text>
+              <Text variant="bodyMedium">Bairro: {item.bairro}</Text>
             </Card.Content>
             <Card.Actions>
               <IconButton

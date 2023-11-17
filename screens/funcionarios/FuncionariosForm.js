@@ -10,16 +10,15 @@ import axios from 'axios'
 
 const FuncionariosForm = ({ navigation, route }) => {
 
-  const [endereco, setEndereco] = useState('')
-
   let funcionario = {
     nome: '',
     telefone: '',
     email: '',
     cpf: '',
     cep: '',
-    localidade: '',
-    logradouro:'',
+    logradouro: '',
+    complemento: '',
+    numero: '',
     bairro: '',
   }
   const id = route.params?.id
@@ -45,13 +44,23 @@ const FuncionariosForm = ({ navigation, route }) => {
       navigation.goBack()
     })
   }
-  function buscar(cep) {
-    axios.get(`https://viacep.com.br/ws/${cep}/json/`).then(response => {
-      setEndereco(response.data);
-      console.log(response.data);
-    })
+  const buscarEnderecoPorCEP = async (cep, setFieldValue) => {
+    try {
+      const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = response.data;
+
+      if (!data.erro) {
+        // Preencher os campos de endereço com os dados obtidos
+        setFieldValue('logradouro', data.logradouro || '');
+        setFieldValue('complemento', data.complemento || '');
+        setFieldValue('bairro', data.bairro || '');
+        setFieldValue('uf', data.uf || '');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar endereço por CEP:', error);
     }
-    console.log(funcionario.cep);
+  };
+
   return (
     <ScrollView style={{ margin: 15 }}>
       <Text>Formulário de funcionários</Text>
@@ -82,7 +91,7 @@ const FuncionariosForm = ({ navigation, route }) => {
               label='Telefone'
               keyboardType='decimal-pad'
               value={values.telefone}
-              onChangeText={(value)=>{setFieldValue('telefone', mask(value, '(99) 9 9999-9999') )}}
+              onChangeText={(value) => { setFieldValue('telefone', mask(value, '(99) 9 9999-9999')) }}
             />
             {(errors.telefone && touched.telefone) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
@@ -108,7 +117,7 @@ const FuncionariosForm = ({ navigation, route }) => {
               label='CPF'
               keyboardType='decimal-pad'
               value={values.cpf}
-              onChangeText={(value)=>{setFieldValue('cpf', mask(value, '999.999.999-99') )}}
+              onChangeText={(value) => { setFieldValue('cpf', mask(value, '999.999.999-99')) }}
             />
             {(errors.cpf && touched.cpf) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
@@ -116,36 +125,82 @@ const FuncionariosForm = ({ navigation, route }) => {
               </Text>
             }
             <TextInput
-              style={{ marginTop: 10 }}
+              style={{ margin: 10 }}
               mode='outlined'
               label='CEP'
-              keyboardType='number-pad'
+              keyboardType='decimal-pad'
               value={values.cep}
-              onChangeText={handleChange('cep')}
+              onChangeText={(value) => {
+                setFieldValue('cep', mask(value, '99999-999'));
+                if (value.length === 9) {
+                  buscarEnderecoPorCEP(value, setFieldValue);
+                }
+              }}
             />
-                <Button onPress={() => buscar(values.cep)}>busca</Button>
             {(errors.cep && touched.cep) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
                 {errors.cep}
               </Text>
             }
-             <TextInput
-              style={{ marginTop: 10 }}
+            <TextInput
+              style={{ margin: 10 }}
               mode='outlined'
-              label='Estado'
-              keyboardType='decimal-pad'
-              value={values.estado}
-              onChangeText={handleChange('estado')}
+              label='Logradouro'
+              value={values.logradouro}
+              onChangeText={handleChange('logradouro')}
             />
-            {(errors.estado && touched.estado) &&
+             {(errors.logradouro && touched.logradouro) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
-                {errors.estado}
+                {errors.logradouro}
+
               </Text>
             }
+            <TextInput
+              style={{ margin: 10 }}
+              mode='outlined'
+              label='Complemento'
+              value={values.complemento}
+              onChangeText={handleChange('complemento')}
+            />
+            {(errors.complemento && touched.complemento) &&
+              <Text style={{ color: 'red', marginTop: 5 }}>
+                {errors.complemento}
+
+              </Text>
+            }
+            <TextInput
+              style={{ margin: 10 }}
+              mode='outlined'
+              label='Número'
+              value={values.numero}
+              onChangeText={handleChange('numero')}
+            />
+            {(errors.numero && touched.numero) &&
+              <Text style={{ color: 'red', marginTop: 5 }}>
+                {errors.numero}
+
+              </Text>
+            }
+            <TextInput
+              style={{ margin: 10 }}
+              mode='outlined'
+              label='Bairro'
+              value={values.bairro}
+              onChangeText={handleChange('bairro')}
+            />
+             {(errors.bairro && touched.bairro) &&
+              <Text style={{ color: 'red', marginTop: 5 }}>
+                {errors.bairro}
+
+              </Text>
+            }
+
+
+
             <Button style={{ margin: 12, }} mode="contained" buttonColor='black' textColor='red' onPress={handleSubmit}>Salvar</Button>
           </View>
         )}
-        
+
 
       </Formik>
     </ScrollView>
