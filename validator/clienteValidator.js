@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const funcionarioValidator = Yup.object().shape({
+const clienteValidator = Yup.object().shape({
     nome: Yup.string()
         .min(2, 'Valor muito curto')
         .required('Campo obrigatório'),
@@ -12,15 +12,9 @@ const funcionarioValidator = Yup.object().shape({
         .required('Campo obrigatório'),
     cpf: Yup.string()
         .required('Campo obrigatório'),
-    logradouro: Yup.string()
-        .required('Campo obrigatório'),
-    bairro: Yup.string()
-        .required('Campo obrigatório'),
     cep: Yup.string()
-        .required('Campo obrigatório'),
-    numero: Yup.string()
         .required('Campo obrigatório'),
 
 })
 
-export default funcionarioValidator
+export default clienteValidator

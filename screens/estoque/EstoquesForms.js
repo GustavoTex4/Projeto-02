@@ -87,7 +87,7 @@ const EstoquesForm = ({ navigation, route }) => {
             <TextInput
               style={{ marginTop: 10 }}
               mode='outlined'
-              label='Preco'
+              label='Preço'
               keyboardType='decimal-pad'
               value={values.preco}
               onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99') )}}

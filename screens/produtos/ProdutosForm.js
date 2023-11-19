@@ -8,7 +8,7 @@ import { Picker } from '@react-native-picker/picker'
 import produtoValidator from '../../validator/produtoValidator'
 
 const ProdutosForm = ({ navigation, route }) => {
-  
+
 
   let produto = {
     nome: '',
@@ -42,7 +42,7 @@ const ProdutosForm = ({ navigation, route }) => {
     })
   }
 
- 
+
 
   return (
     <ScrollView style={{ margin: 15 }}>
@@ -71,10 +71,10 @@ const ProdutosForm = ({ navigation, route }) => {
             <TextInput
               style={{ marginTop: 10 }}
               mode='outlined'
-              label='Preco'
+              label='Preço'
               keyboardType='decimal-pad'
               value={values.preco}
-              onChangeText={(value)=>{setFieldValue('preco', mask(value, 'R$ 99,99') )}}
+              onChangeText={(value) => { setFieldValue('preco', mask(value, 'R$ 99,99')) }}
             />
             {(errors.preco && touched.preco) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
@@ -97,8 +97,7 @@ const ProdutosForm = ({ navigation, route }) => {
             <TextInput
               style={{ marginTop: 10 }}
               mode='outlined'
-              label='descricao'
-              keyboardType='decimal-pad'
+              label='Descrição'
               value={values.descricao}
               onChangeText={handleChange('descricao')}
             />
@@ -111,7 +110,6 @@ const ProdutosForm = ({ navigation, route }) => {
               style={{ marginTop: 10 }}
               mode='outlined'
               label='Foto'
-              keyboardType='decimal-pad'
               value={values.foto}
               onChangeText={handleChange('foto')}
             />
@@ -120,7 +118,7 @@ const ProdutosForm = ({ navigation, route }) => {
                 {errors.foto}
               </Text>
             }
-            <Button style={{ margin: 12, }} mode="contained" buttonColor='black' textColor='red' onPress={handleSubmit}>Salvar</Button>
+            <Button style={{ margin: 12 }} mode="contained" buttonColor='black' textColor='red' onPress={handleSubmit}>Salvar</Button>
           </View>
         )}
 

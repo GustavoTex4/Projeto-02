@@ -9,8 +9,8 @@ const  FuncionariosStack = () => {
   return (
     <>
       <Stack.Navigator>
-        <Stack.Screen name="funcionarios" component={Funcionarios} options={{ title: 'Funcionarios' }} />
-        <Stack.Screen name="funcionarios-form" component={FuncionariosForm} options={{ title: 'Funcionarios' }} />
+        <Stack.Screen name="funcionarios" component={Funcionarios} options={{ title: 'Funcionários' }} />
+        <Stack.Screen name="funcionarios-form" component={FuncionariosForm} options={{ title: 'Funcionários' }} />
       </Stack.Navigator>
     </>
   )

@@ -7,9 +7,6 @@ import { Button, Card, Dialog, FAB, IconButton, MD3DarkTheme, Portal, Searchbar,
 
 const Funcionarios = ({ navigation }) => {
 
-
-  
-
   const [busca, setBusca] = useState('')
 
   const [funcionarios, setFuncionarios] = useState([])

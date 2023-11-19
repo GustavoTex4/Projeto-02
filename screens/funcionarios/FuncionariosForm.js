@@ -2,13 +2,14 @@
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { Button, Text, TextInput } from 'react-native-paper'
+import { Button, RadioButton, Text, TextInput } from 'react-native-paper'
 import { mask } from 'remask'
 import funcionarioValidator from '../../validator/funcionarioValidator'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 const FuncionariosForm = ({ navigation, route }) => {
+  const [value, setValue] = React.useState('first');
 
   let funcionario = {
     nome: '',
@@ -50,7 +51,6 @@ const FuncionariosForm = ({ navigation, route }) => {
       const data = response.data;
 
       if (!data.erro) {
-        // Preencher os campos de endereço com os dados obtidos
         setFieldValue('logradouro', data.logradouro || '');
         setFieldValue('complemento', data.complemento || '');
         setFieldValue('bairro', data.bairro || '');
@@ -63,7 +63,7 @@ const FuncionariosForm = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ margin: 15 }}>
-      <Text>Formulário de funcionários</Text>
+      <Text>Formulário de Funcionários</Text>
 
       <Formik
         initialValues={funcionario}
@@ -102,7 +102,6 @@ const FuncionariosForm = ({ navigation, route }) => {
               style={{ marginTop: 10 }}
               mode='outlined'
               label='Email'
-              keyboardType='decimal-pad'
               value={values.email}
               onChangeText={handleChange('email')}
             />
@@ -149,7 +148,7 @@ const FuncionariosForm = ({ navigation, route }) => {
               value={values.logradouro}
               onChangeText={handleChange('logradouro')}
             />
-             {(errors.logradouro && touched.logradouro) &&
+            {(errors.logradouro && touched.logradouro) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
                 {errors.logradouro}
 
@@ -172,6 +171,7 @@ const FuncionariosForm = ({ navigation, route }) => {
               style={{ margin: 10 }}
               mode='outlined'
               label='Número'
+              keyboardType='decimal-pad'
               value={values.numero}
               onChangeText={handleChange('numero')}
             />
@@ -188,21 +188,29 @@ const FuncionariosForm = ({ navigation, route }) => {
               value={values.bairro}
               onChangeText={handleChange('bairro')}
             />
-             {(errors.bairro && touched.bairro) &&
+            {(errors.bairro && touched.bairro) &&
               <Text style={{ color: 'red', marginTop: 5 }}>
                 {errors.bairro}
 
               </Text>
             }
-
-
-
             <Button style={{ margin: 12, }} mode="contained" buttonColor='black' textColor='red' onPress={handleSubmit}>Salvar</Button>
+            <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
+              <View>
+                <Text>Funcionário novo</Text>
+                <RadioButton value="first" />
+              </View>
+              <View>
+                <Text>Funcionário de outro setor</Text>
+                <RadioButton value="second" />
+              </View>
+            </RadioButton.Group>
           </View>
         )}
 
-
       </Formik>
+
+
     </ScrollView>
   )
 }

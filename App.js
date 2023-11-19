@@ -4,10 +4,10 @@ import { PaperProvider } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProdutosStack from './screens/produtos/ProdutosStack';
 import PedidosStack from './screens/pedidos/PedidosStack';
-import CarrinhosStack from './screens/carrinhos/CarrinhosStack';
 import ClientesStack from './screens/clientes/ClientesStack';
 import EstoquesStack from './screens/estoque/EstoquesStack';
 import FuncionariosStack from './screens/funcionarios/FuncionariosStack';
+import InicioStack from './screens/Inicio/InicioStack';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -17,6 +17,15 @@ export default function App() {
       <PaperProvider>
         <NavigationContainer>
           <Tab.Navigator>
+            <Tab.Screen
+             name="Início" 
+             component={InicioStack}
+             options={{
+               tabBarIcon: () => (
+                 <MaterialCommunityIcons name="folder-home" size={26} />
+               ),
+             }}
+           />
             <Tab.Screen
               name="Produtos" 
               component={ProdutosStack}
@@ -32,15 +41,6 @@ export default function App() {
               options={{
                 tabBarIcon: () => (
                   <MaterialCommunityIcons name="inbox-arrow-up" size={26} />
-                ),
-              }}
-            />
-             <Tab.Screen
-              name="Carrinhos" 
-              component={CarrinhosStack}
-              options={{
-                tabBarIcon: () => (
-                  <MaterialCommunityIcons name="cart-outline" size={26} />
                 ),
               }}
             />
@@ -63,7 +63,7 @@ export default function App() {
               }}
             />
             <Tab.Screen
-              name="Funcionarios" 
+              name="Funcionários" 
               component={FuncionariosStack}
               options={{
                 tabBarIcon: () => (
