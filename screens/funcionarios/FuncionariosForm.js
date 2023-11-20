@@ -21,6 +21,7 @@ const FuncionariosForm = ({ navigation, route }) => {
     complemento: '',
     numero: '',
     bairro: '',
+   
   }
   const id = route.params?.id
 
@@ -194,18 +195,24 @@ const FuncionariosForm = ({ navigation, route }) => {
 
               </Text>
             }
-            <Button style={{ margin: 12, }} mode="contained" buttonColor='black' textColor='red' onPress={handleSubmit}>Salvar</Button>
-            <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
-              <View>
-                <Text>Funcionário novo</Text>
-                <RadioButton value="first" />
+           
+                <RadioButton.Group onValueChange={newValue => setValue(newValue)} 
+                value={value}>
+                  
+                  <View>
+                    <Text>Funcionário novo</Text>
+                    <RadioButton onValue={handleChange('tipo')} value="novo" />
+                  </View>
+                  <View>
+                    <Text>Funcionário de outro setor</Text>
+                    <RadioButton onValue={handleChange('tipo')} value="antigo" />
+                  </View>
+                </RadioButton.Group>
+                <Button style={{ margin: 12, }} mode="contained" buttonColor='black' textColor='red' onPress={handleSubmit}>Salvar</Button>
               </View>
-              <View>
-                <Text>Funcionário de outro setor</Text>
-                <RadioButton value="second" />
-              </View>
-            </RadioButton.Group>
-          </View>
+         
+           
+            
         )}
 
       </Formik>
